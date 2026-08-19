@@ -25,10 +25,15 @@ instead of a flat rate; an append-only ledger instead of a mutable counter, so t
 audit trail; a credit budget the customer sets instead of a fixed constant; and SQLite rather
 than in-memory state, so idempotency survives a restart.
 
-**One thing it got wrong that I caught.** It built the screen as a debug console — presets,
-fault-injection controls, budget overrides, an idempotency-key field, a raw ledger table —
-when the brief asked for a small screen where a person types a goal, watches the steps, and
-sees the result. It had optimised for demonstrating its own implementation rather than for
-the person using it. I had it cut the request-shaping controls back out to the API where they
-belong, and made the steps appear as the loop reaches them instead of rendering all seven up
-front.
+**One thing it got wrong that I caught.** The brief says the screen should let a person watch
+the steps appear. The AI drew all seven up front as a greyed-out checklist that filled itself
+in — which looks like progress but isn't, since the whole plan was on screen before the agent
+had done anything. I had it draw each step only once the loop actually reaches it, so the list
+grows as the run executes. That's what's in the recording: a few seconds in you see three
+steps, not seven.
+
+I did also have it strip the screen back to just the goal, the steps and the result at one
+point. I reverted that. For this audience the fuller screen is the right call — the ledger
+rows, the idempotency keys and the budget meters are the evidence for the three things the
+brief says it cares about, and burying them behind curl would have made the run loop harder to
+judge, not easier.
