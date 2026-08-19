@@ -6,216 +6,217 @@
 <title>Remittance Agent</title>
 <style>
   :root{
-    --bg:#0f1216; --card:#171d24; --panel:#141a21; --line:#252e38;
-    --ink:#e6edf3; --dim:#8b98a5; --faint:#5c6773; --idle:#3d4753;
-    --ok:#3fb950; --run:#58a6ff; --fail:#f85149; --bound:#d29922;
+    --bg:#0f1216; --panel:#161b22; --panel2:#1c232c; --line:#2a333f;
+    --ink:#e6edf3; --dim:#8b98a5; --faint:#5c6773;
+    --ok:#3fb950; --run:#58a6ff; --fail:#f85149; --bound:#d29922; --idle:#3d4753;
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
-    font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    display:flex;justify-content:center;padding:56px 20px 90px}
-  main{width:100%;max-width:560px;transition:max-width .25s ease}
-  body.detail main{max-width:860px}
-
-  /* Everything the brief does not ask for is hidden until Details is on.
-     Default view = type a goal, watch steps, see the result. */
-  .more{display:none}
-  body.detail .more{display:block}
-  body.detail .more[hidden]{display:none}
-  body.detail tr.more{display:table-row}
-  body.detail span.more,body.detail .more.inline{display:inline-block}
-
-  header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:24px}
-  h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
-  #toggle{background:none;border:1px solid var(--line);color:var(--faint);
-    border-radius:20px;padding:4px 12px;font:11px var(--mono);cursor:pointer}
-  #toggle:hover{color:var(--dim)}
-  body.detail #toggle{color:var(--run);border-color:#1f4f80}
-
-  form{display:flex;gap:10px}
-  input,select{background:var(--card);color:var(--ink);border:1px solid var(--line);
-    border-radius:9px;padding:12px 14px;font:15px inherit}
-  form input{flex:1}
+       font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+  h1{font-size:19px;margin:0;letter-spacing:-.01em}
+  h1 span{color:var(--dim);font-weight:400}
+  h2{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--dim);
+     margin:0 0 10px;font-weight:600}
+  header{display:flex;align-items:baseline;justify-content:space-between;
+         gap:16px;margin-bottom:22px;flex-wrap:wrap}
+  .rate-card{font:11px/1.6 var(--mono);color:var(--faint);text-align:right}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:16px}
+  label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;
+        color:var(--dim);margin-bottom:5px}
+  input,select{width:100%;background:var(--bg);color:var(--ink);border:1px solid var(--line);
+    border-radius:7px;padding:9px 11px;font:14px var(--mono)}
   input:focus,select:focus{outline:none;border-color:var(--run)}
-  button{background:var(--run);color:#06121f;border:0;border-radius:9px;
-    padding:12px 22px;font:600 14px inherit;cursor:pointer}
+  button{background:var(--run);color:#06121f;border:0;border-radius:7px;padding:10px 18px;
+    font-weight:650;font-size:13px;cursor:pointer}
   button:disabled{opacity:.45;cursor:not-allowed}
-  button.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);font-weight:500}
-
-  /* ---- detail: controls ---- */
-  #controls{margin-top:14px;border:1px solid var(--line);border-radius:10px;
-    padding:16px;background:var(--panel)}
-  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-  .chip{font:11px var(--mono);background:var(--card);border:1px solid var(--line);
+  button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:500}
+  button.warn{background:var(--bound);color:#1a1400}
+  .row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+  .row > *{flex:1;min-width:130px}
+  .row .grow2{flex:3;min-width:280px}
+  .row .fit{flex:0 0 auto;min-width:0}
+  .presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .preset{font:11px var(--mono);background:var(--panel2);border:1px solid var(--line);
     color:var(--dim);border-radius:20px;padding:4px 11px;cursor:pointer}
-  .chip:hover{color:var(--ink);border-color:var(--faint)}
-  .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-  label{display:block;font:10px var(--mono);text-transform:uppercase;letter-spacing:.07em;
-    color:var(--faint);margin-bottom:5px}
-  .fields input,.fields select{width:100%;font:13px var(--mono);padding:9px 11px}
-  .hint{font-size:12px;color:var(--faint);margin-top:11px}
-  .rates{margin-top:13px;padding-top:13px;border-top:1px solid var(--line);
-    font:11px/1.7 var(--mono);color:var(--faint);
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0 20px}
-  .rates div{display:flex;justify-content:space-between;gap:10px}
+  .preset:hover{color:var(--ink);border-color:var(--faint)}
+  .hint{font-size:11px;color:var(--faint);margin-top:8px}
 
-  /* ---- detail: request badge ---- */
-  #req:empty{display:none}
-  #req{margin-top:14px;font:12px var(--mono);padding:9px 12px;border-radius:8px;
-    border:1px solid var(--line);background:var(--panel)}
-  #req.new{border-color:#1f6f36;color:var(--ok)}
-  #req.replay{border-color:#8a6d1f;color:var(--bound)}
-  #req.err{border-color:#7d2b26;color:var(--fail)}
+  /* request badge -- the idempotency story, told by HTTP status */
+  .req{display:none;margin-top:12px;font:12px var(--mono);padding:9px 12px;border-radius:7px;
+       border:1px solid var(--line);background:var(--panel2)}
+  .req.show{display:block}
+  .req b{font-family:var(--mono)}
+  .req.new{border-color:#1f6f36;color:var(--ok)}
+  .req.replay{border-color:#8a6d1f;color:var(--bound)}
+  .req.err{border-color:#7d2b26;color:var(--fail)}
 
-  /* ---- detail: run meta + meters ---- */
-  #meta{margin-top:16px;border:1px solid var(--line);border-radius:10px;
-    padding:16px;background:var(--panel)}
-  .metarow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  /* status header */
+  .status-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
   .pill{font:11px var(--mono);text-transform:uppercase;letter-spacing:.06em;
-    padding:4px 10px;border-radius:20px;border:1px solid var(--idle);color:var(--faint)}
+    padding:4px 10px;border-radius:20px;border:1px solid}
+  .pill.queued,.pill.pending{color:var(--faint);border-color:var(--idle)}
   .pill.running{color:var(--run);border-color:#1f4f80}
-  .pill.completed{color:var(--ok);border-color:#1f6f36}
+  .pill.completed,.pill.succeeded{color:var(--ok);border-color:#1f6f36}
   .pill.failed{color:var(--fail);border-color:#7d2b26}
   .pill.max_steps_exceeded,.pill.max_credits_exceeded{color:var(--bound);border-color:#8a6d1f}
-  .rid{font:12px var(--mono);color:var(--dim)}
-  .meters{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .meter .top{display:flex;justify-content:space-between;font:11px var(--mono);
-    color:var(--dim);margin-bottom:5px}
-  .meter .top b{color:var(--ink)}
-  .track{height:5px;background:var(--bg);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+  .pill.skipped{color:var(--faint);border-color:var(--idle);opacity:.6}
+  .meta{font:12px var(--mono);color:var(--dim)}
+
+  /* budget meters */
+  .meters{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px}
+  .meter .top{display:flex;justify-content:space-between;font:11px var(--mono);color:var(--dim);margin-bottom:5px}
+  .meter .top b{color:var(--ink);font-weight:600}
+  .track{height:6px;background:var(--bg);border-radius:4px;overflow:hidden;border:1px solid var(--line)}
   .fill{height:100%;background:var(--run);transition:width .3s ease}
   .fill.bound{background:var(--bound)}
 
-  /* ---- steps ---- */
-  #steps{margin:26px 0 0}
-  .step{border-radius:8px;animation:appear .28s ease both}
-  @keyframes appear{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-  .head{display:flex;align-items:center;gap:12px;padding:9px 0}
-  body.detail .step.has-body .head{cursor:pointer}
-  .dot{width:7px;height:7px;border-radius:50%;background:var(--run);flex:0 0 auto}
-  .step.succeeded .dot{background:var(--ok)}
-  .step.failed .dot{background:var(--fail)}
-  .step.running .dot{animation:pulse 1s ease-in-out infinite}
-  @keyframes pulse{50%{opacity:.25}}
-  .idx{font:11px var(--mono);color:var(--faint);width:14px;flex:0 0 auto}
-  .name{font:14px var(--mono);flex:1}
-  .step.succeeded .name{color:var(--dim)}
+  /* steps */
+  .step{border:1px solid var(--line);border-radius:8px;margin-bottom:7px;background:var(--panel2);
+        transition:border-color .2s}
+  .step.active{border-color:#1f4f80}
+  .step-head{display:flex;align-items:center;gap:11px;padding:11px 13px;cursor:pointer}
+  .step.no-output .step-head{cursor:default}
+  .idx{font:11px var(--mono);color:var(--faint);width:16px;flex:0 0 auto}
+  .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;background:var(--idle)}
+  .dot.running{background:var(--run);animation:pulse 1s infinite}
+  .dot.succeeded{background:var(--ok)}
+  .dot.failed{background:var(--fail)}
+  .dot.skipped{background:var(--idle);opacity:.45}
+  @keyframes pulse{50%{opacity:.3}}
+  .sname{font:13px var(--mono);flex:1}
+  .step.skipped .sname,.step.pending .sname{color:var(--faint)}
   .tag{font:10px var(--mono);padding:2px 7px;border-radius:4px;background:var(--bg);
-    border:1px solid var(--line);color:var(--dim);flex:0 0 auto}
+       border:1px solid var(--line);color:var(--dim)}
   .tag.replay{color:var(--bound);border-color:#8a6d1f}
   .tag.free{color:var(--ok);border-color:#1f6f36}
-  .cost{font:12px var(--mono);color:var(--dim);width:58px;text-align:right;flex:0 0 auto}
+  .cost{font:12px var(--mono);color:var(--dim);width:64px;text-align:right;flex:0 0 auto}
   .cost.zero{color:var(--faint);text-decoration:line-through}
-  .dur{font:11px var(--mono);color:var(--faint);width:52px;text-align:right;flex:0 0 auto}
-  .state{font:12px var(--mono);color:var(--faint);flex:0 0 auto}
-  .step.failed .state{color:var(--fail)}
-  .body{display:none;border-top:1px solid var(--line);margin:0 0 8px;padding:10px 0 0}
-  body.detail .step.open .body{display:block}
+  .dur{font:11px var(--mono);color:var(--faint);width:56px;text-align:right;flex:0 0 auto}
+  .step-body{display:none;border-top:1px solid var(--line);padding:11px 13px}
+  .step.open .step-body{display:block}
   pre{margin:0;font:11px/1.55 var(--mono);color:var(--dim);white-space:pre-wrap;
-    word-break:break-word;max-height:240px;overflow:auto}
-  .errline{color:var(--fail);font:12px var(--mono)}
+      word-break:break-word;max-height:260px;overflow:auto}
+  .err{color:var(--fail);font:12px var(--mono)}
 
-  /* ---- result ---- */
-  .card{margin-top:26px;border:1px solid var(--line);border-radius:12px;
-    padding:22px;background:var(--card);animation:appear .3s ease both}
-  .card.ok{border-color:#1f6f36;background:#101c14}
-  .card.bad{border-color:#7d2b26;background:#1c1315}
-  .card.warn{border-color:#8a6d1f;background:#1c1810}
-  .amount{font:600 24px var(--mono);letter-spacing:-.02em;margin-bottom:6px}
-  .card.ok .amount{color:var(--ok)}
-  .detailline{font:13px var(--mono);color:var(--dim)}
-  .credits{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);
-    font:13px var(--mono);color:var(--dim)}
-  .credits b{color:var(--ink);font-weight:600}
-  .title{font:600 15px inherit;margin-bottom:6px}
-  .card.bad .title{color:var(--fail)}
-  .card.warn .title{color:var(--bound)}
-  .msg{font:13px var(--mono);color:var(--dim)}
-  .note{margin-top:14px;font-size:13px;color:var(--dim)}
-  .card button{margin-top:16px;background:transparent;border:1px solid var(--line);
-    color:var(--ink);font-weight:500;padding:9px 18px}
-  .card.bad button{border-color:#7d2b26;color:#ff9b95}
-
-  /* ---- detail: ledger ---- */
-  #ledger{margin-top:26px}
-  h2{font:600 11px var(--mono);text-transform:uppercase;letter-spacing:.09em;
-    color:var(--faint);margin:0 0 10px}
-  h2 span{text-transform:none;letter-spacing:0}
+  /* ledger */
   table{width:100%;border-collapse:collapse;font:12px var(--mono)}
   th{text-align:left;color:var(--faint);font-weight:500;font-size:10px;text-transform:uppercase;
-    letter-spacing:.07em;padding:0 8px 7px;border-bottom:1px solid var(--line)}
-  td{padding:7px 8px;border-bottom:1px solid #1c232b;color:var(--dim)}
+     letter-spacing:.07em;padding:0 8px 7px;border-bottom:1px solid var(--line)}
+  td{padding:7px 8px;border-bottom:1px solid #1e252e;color:var(--dim)}
+  tr:last-child td{border-bottom:0}
   td.num{text-align:right;color:var(--ink)}
+  tfoot td{border-top:1px solid var(--line);border-bottom:0;color:var(--ink);font-weight:650;padding-top:9px}
   .key{color:var(--faint);font-size:10px}
-  tfoot td{border-top:1px solid var(--line);border-bottom:0;color:var(--ink);
-    font-weight:600;padding-top:9px}
+
+  /* banners + receipt */
+  .banner{border-radius:8px;padding:13px 15px;margin-bottom:16px;font-size:13px;border:1px solid}
+  .banner.failed{background:#2a1416;border-color:#7d2b26}
+  .banner.failed .t{color:var(--fail)}
+  .banner.bound{background:#241d0c;border-color:#8a6d1f}
+  .banner.bound .t{color:var(--bound)}
+  .banner .t{font:12px var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+  .banner .m{color:var(--ink)}
+  .banner .sub{color:var(--dim);font-size:12px;margin-top:7px}
+  .receipt{border:1px solid #1f6f36;border-radius:10px;background:#0f1c13;padding:18px}
+  .receipt .rt{font:11px var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--ok);margin-bottom:14px}
+  .rline{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #17351f;
+    font:13px var(--mono)}
+  .rline:last-child{border-bottom:0}
+  .rline .k{color:var(--dim)}
+  .rline .v{color:var(--ink)}
+  .rline.big .v{font-size:17px;color:var(--ok);font-weight:650}
+  .hidden{display:none}
 </style>
 </head>
 <body>
-<main>
+<div class="wrap">
+
   <header>
-    <h1>Remittance Agent</h1>
-    <button id="toggle" type="button">Details</button>
+    <div>
+      <h1>Remittance Agent <span>— bounded run loop</span></h1>
+      <div class="meta" id="tagline">plan → validate → quote → lock → execute → receipt</div>
+    </div>
+    <div class="rate-card" id="rateCard"></div>
   </header>
 
-  <form id="form">
-    <input id="goal" autocomplete="off" placeholder="Send $500 to my mom in Accra at the best rate"
-           value="Send $500 to my mom in Accra at the best rate">
-    <button id="run" type="submit">Run</button>
-  </form>
-
-  <div id="controls" class="more">
-    <div class="chips" id="chips"></div>
-    <div class="fields">
-      <div>
-        <label for="failAt">Inject failure at</label>
-        <select id="failAt"><option value="">— none —</option></select>
+  <!-- ------------------------------------------------------------------ -->
+  <div class="panel">
+    <form id="form">
+      <div class="row">
+        <div class="grow2">
+          <label for="goal">Goal</label>
+          <input id="goal" value="Send $500 to my mom in Accra at the best rate" autocomplete="off">
+        </div>
+        <div class="fit"><button id="submit" type="submit">Run</button></div>
       </div>
-      <div><label for="maxSteps">Max steps</label>
-        <input id="maxSteps" type="number" min="1" autocomplete="off"></div>
-      <div><label for="maxCredits">Max credits (mc)</label>
-        <input id="maxCredits" type="number" min="0" autocomplete="off"></div>
-      <div><label for="idemKey">Idempotency-Key</label>
-        <input id="idemKey" placeholder="(blank → body hash)" autocomplete="off"></div>
-    </div>
-    <div class="hint">Leave the key blank and the server hashes the request body instead —
-      resubmitting the same goal replays the stored run rather than charging twice.</div>
-    <div class="rates" id="rates"></div>
+      <div class="presets" id="presets"></div>
+
+      <div class="row" style="margin-top:16px">
+        <div>
+          <label for="failAt">Inject failure at</label>
+          <select id="failAt"><option value="">— none —</option></select>
+        </div>
+        <div>
+          <label for="maxSteps">Max steps</label>
+          <input id="maxSteps" type="number" min="1" placeholder="8" autocomplete="off">
+        </div>
+        <div>
+          <label for="maxCredits">Max credits (mc)</label>
+          <input id="maxCredits" type="number" min="0" placeholder="6000" autocomplete="off">
+        </div>
+        <div>
+          <label for="idemKey">Idempotency-Key</label>
+          <input id="idemKey" placeholder="(blank → body hash)" autocomplete="off">
+        </div>
+      </div>
+      <div class="hint">Leave the key blank and the server hashes the request body instead — resubmitting the same goal replays the stored run rather than charging twice.</div>
+    </form>
+    <div class="req" id="req"></div>
   </div>
 
-  <div id="req" class="more"></div>
+  <!-- ------------------------------------------------------------------ -->
+  <div id="runPanel" class="hidden">
 
-  <div id="meta" class="more" hidden>
-    <div class="metarow">
-      <span class="pill" id="pill">queued</span>
-      <span class="rid" id="rid"></span>
-      <span style="flex:1"></span>
-      <button class="ghost" id="dup" type="button" style="padding:8px 14px;font-size:12px">
-        Send duplicate request</button>
-    </div>
-    <div class="meters">
-      <div class="meter">
-        <div class="top"><span>Credits</span>
-          <span><b id="cU">0.000</b> / <span id="cC">—</span></span></div>
-        <div class="track"><div class="fill" id="cF" style="width:0%"></div></div>
+    <div class="panel">
+      <div class="status-bar">
+        <span class="pill" id="statusPill">queued</span>
+        <span class="meta" id="runMeta"></span>
+        <span style="flex:1"></span>
+        <button class="ghost fit" id="dupBtn" type="button">Send duplicate request</button>
+        <button class="warn fit hidden" id="resumeBtn" type="button">Resume</button>
       </div>
-      <div class="meter">
-        <div class="top"><span>Steps attempted</span>
-          <span><b id="sU">0</b> / <span id="sC">—</span></span></div>
-        <div class="track"><div class="fill" id="sF" style="width:0%"></div></div>
+      <div class="meters">
+        <div class="meter">
+          <div class="top"><span>Credits</span><span><b id="credUsed">0.000</b> / <span id="credCap">6.000</span></span></div>
+          <div class="track"><div class="fill" id="credFill" style="width:0%"></div></div>
+        </div>
+        <div class="meter">
+          <div class="top"><span>Steps attempted</span><span><b id="stepUsed">0</b> / <span id="stepCap">8</span></span></div>
+          <div class="track"><div class="fill" id="stepFill" style="width:0%"></div></div>
+        </div>
       </div>
     </div>
+
+    <div id="banner"></div>
+
+    <div class="panel">
+      <h2>Steps</h2>
+      <div id="steps"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Ledger <span style="text-transform:none;letter-spacing:0;color:var(--faint)">— append-only; the total is a SUM over these rows, never a stored column</span></h2>
+      <div id="ledger"></div>
+    </div>
+
+    <div id="receiptWrap"></div>
   </div>
-
-  <div id="steps"></div>
-  <div id="result"></div>
-  <div id="ledger" class="more"></div>
-</main>
+</div>
 
 <script>
 const $ = id => document.getElementById(id);
-
 const PRESETS = [
   ["Happy path", {goal:"Send $500 to my mom in Accra at the best rate"}],
   ["Fail at transfer → resume", {goal:"Send $500 to my mom in Accra at the best rate", fail:"execute_transfer"}],
@@ -223,290 +224,284 @@ const PRESETS = [
   ["Step bound (3)", {goal:"Send $500 to my mom in Accra", steps:3}],
   ["Credit bound (2000mc)", {goal:"Send $500 to my mom in Accra", credits:2000}],
   ["Unsupported corridor", {goal:"Send $500 to my mom in Lagos"}],
-  ["No amount", {goal:"Send money to my mom in Accra"}],
-  ["No recipient", {goal:"Send $500 to Accra"}],
+  ["No amount in goal", {goal:"Send money to my mom in Accra"}],
 ];
 
-let META = null, poll = null, LAST = null, CURRENT = null;
-const rows = new Map();     // step name -> row element (so each animates in once)
-const OPEN = new Set();     // steps the user expanded, preserved across polls
+let META = null;          // /meta payload
+let POLL = null;          // interval handle
+let LAST_REQ = null;      // last POST body+key, for the duplicate button
+let OPEN = new Set();     // step names the user expanded, kept across re-renders
 
-/* ------------------------------------------------------------ detail mode */
-if (localStorage.getItem('detail') === '1') document.body.classList.add('detail');
-$('toggle').onclick = () => {
-  const on = document.body.classList.toggle('detail');
-  localStorage.setItem('detail', on ? '1' : '0');
-  if (CURRENT) render(CURRENT);   // redraw so step rows pick up the extra columns
-};
-
-/* ----------------------------------------------------------------- boot */
-(async () => {
+// ---------------------------------------------------------------- bootstrap
+async function boot(){
   META = await (await fetch('/meta')).json();
-  $('maxSteps').placeholder = META.defaults.max_steps;
-  $('maxCredits').placeholder = META.defaults.max_credits_mc;
-  $('rates').innerHTML = META.pipeline
-    .map(s => `<div><span>${s.name}</span><span>${s.cost_display}</span></div>`).join('')
-    + `<div style="color:var(--dim)"><span>full run</span><span>${META.full_run_cost_display} cr</span></div>`;
+  $('rateCard').innerHTML = META.pipeline
+    .map(s => `${s.name.padEnd(19,' ')} ${s.cost_display}`).join('<br>')
+    + `<br><span style="color:var(--dim)">full run&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${META.full_run_cost_display} cr</span>`;
   META.pipeline.forEach(s => {
     const o = document.createElement('option');
-    o.value = o.textContent = s.name;
+    o.value = s.name; o.textContent = s.name;
     $('failAt').appendChild(o);
   });
+  $('maxSteps').placeholder = META.defaults.max_steps;
+  $('maxCredits').placeholder = META.defaults.max_credits_mc;
   PRESETS.forEach(([label, p]) => {
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'chip'; b.textContent = label;
+    b.type = 'button'; b.className = 'preset'; b.textContent = label;
     b.onclick = () => {
-      $('goal').value = p.goal; $('failAt').value = p.fail || '';
-      $('maxSteps').value = p.steps || ''; $('maxCredits').value = p.credits || '';
+      $('goal').value = p.goal;
+      $('failAt').value = p.fail || '';
+      $('maxSteps').value = p.steps || '';
+      $('maxCredits').value = p.credits || '';
       $('idemKey').value = '';
     };
-    $('chips').appendChild(b);
+    $('presets').appendChild(b);
   });
-})();
+}
 
-/* --------------------------------------------------------------- submit */
-$('form').onsubmit = e => {
+// ------------------------------------------------------------------- submit
+$('form').onsubmit = async e => {
   e.preventDefault();
   const body = {goal: $('goal').value};
   if ($('failAt').value)     body.fail_at_step   = $('failAt').value;
   if ($('maxSteps').value)   body.max_steps      = +$('maxSteps').value;
   if ($('maxCredits').value) body.max_credits_mc = +$('maxCredits').value;
-  LAST = {body, key: $('idemKey').value.trim()};
-  reset();
-  post(LAST.body, LAST.key);
+  const key = $('idemKey').value.trim();
+  LAST_REQ = {body, key};
+  OPEN.clear();
+  await post(body, key);
 };
 
-// Replays the previous request byte-for-byte, so the idempotency behaviour is
-// visible on screen and not only in curl.
-$('dup').onclick = () => LAST && post(LAST.body, LAST.key);
+// The duplicate button replays the exact previous request, so the idempotency
+// behaviour is visible in the UI rather than only in curl.
+$('dupBtn').onclick = () => LAST_REQ && post(LAST_REQ.body, LAST_REQ.key);
 
 async function post(body, key){
-  $('run').disabled = true;
-  const headers = {'Content-Type': 'application/json'};
+  $('submit').disabled = true;
+  const headers = {'Content-Type':'application/json'};
   if (key) headers['Idempotency-Key'] = key;
   let res, data;
   try {
     res = await fetch('/runs', {method:'POST', headers, body: JSON.stringify(body)});
     data = await res.json();
-  } catch (err) { $('run').disabled = false; return badge('err', `network error — ${err}`); }
+  } catch (err) {
+    return badge('err', `network error — ${err}`);
+  } finally { $('submit').disabled = false; }
 
   if (res.status === 422) {
-    $('run').disabled = false;
     const d = data.detail;
-    const msg = Array.isArray(d) ? d[0].msg : (d && d.message) || JSON.stringify(d);
-    badge('err', `<b>422</b> ${Array.isArray(d) ? 'validation error' : d.code} — ${esc(msg)}`);
-    return showError({message: msg});
+    return badge('err', `<b>422</b> ${d && d.code ? d.code : 'validation error'} — ` +
+      (d && d.message ? d.message : JSON.stringify(d)));
   }
-  if (!res.ok && res.status !== 202) {
-    $('run').disabled = false;
-    return badge('err', `<b>${res.status}</b> ${esc(JSON.stringify(data))}`);
-  }
+  if (!res.ok && res.status !== 202) return badge('err', `<b>${res.status}</b> ${JSON.stringify(data)}`);
 
   const replayed = res.headers.get('Idempotency-Replayed') === 'true';
-  if (res.status === 201)
-    badge('new', `<b>201 Created</b> — new run <code>${data.id.slice(0,8)}</code>, key ` +
-      `<code>${esc(data.idempotency_key.slice(0,26))}</code> (${data.idempotency_source})`);
-  else if (res.status === 202 && replayed)
-    badge('replay', `<b>202 Accepted</b> — duplicate of an <b>in-flight</b> run. Not re-executed, ` +
-      `not re-charged. Retry-After: ${res.headers.get('Retry-After')}s`);
-  else if (replayed)
-    badge('replay', `<b>200 OK</b> — idempotent replay. Stored run returned; no steps re-executed, ` +
-      `credits unchanged at <b>${data.credits.used_display}</b>`);
-
+  if (res.status === 201) {
+    badge('new', `<b>201 Created</b> — new run <code>${data.id.slice(0,8)}</code>, ` +
+      `key <code>${data.idempotency_key.slice(0,26)}</code> (${data.idempotency_source})`);
+  } else if (res.status === 202 && replayed) {
+    badge('replay', `<b>202 Accepted</b> — duplicate of an <b>in-flight</b> run. ` +
+      `Not re-executed, not re-charged. Retry-After: ${res.headers.get('Retry-After')}s`);
+  } else if (replayed) {
+    badge('replay', `<b>200 OK</b> — idempotent replay. Stored run returned; ` +
+      `no steps re-executed, credits unchanged at <b>${data.credits.used_display}</b>`);
+  }
+  $('runPanel').classList.remove('hidden');
   render(data);
-  if (!data.terminal) watch(data.id); else $('run').disabled = false;
+  if (!data.terminal) startPoll(data.id);
 }
 
-function badge(kind, html){ $('req').className = `more ${kind}`; $('req').innerHTML = html; }
-
-/* ----------------------------------------------------------------- poll */
-function reset(){
-  if (poll) { clearInterval(poll); poll = null; }
-  rows.clear(); OPEN.clear();
-  $('steps').innerHTML = ''; $('result').innerHTML = ''; $('ledger').innerHTML = '';
+function badge(kind, html){
+  const el = $('req');
+  el.className = `req show ${kind}`;
+  el.innerHTML = html;
 }
-function watch(id){
-  poll = setInterval(async () => {
+
+// -------------------------------------------------------------------- resume
+$('resumeBtn').onclick = async () => {
+  const id = $('resumeBtn').dataset.id;
+  $('resumeBtn').disabled = true;
+  const res = await fetch(`/runs/${id}/resume`, {method:'POST'});
+  const data = await res.json();
+  $('resumeBtn').disabled = false;
+  if (res.status === 409) return badge('err', `<b>409</b> ${data.detail.code} — ${data.detail.message}`);
+  badge('new', `<b>${res.status}</b> resuming — cached steps replay at <b>0.000</b> credits, ` +
+    `execution restarts at <code>${data.steps.find(s => s.status === 'pending')?.name || '—'}</code>`);
+  render(data);
+  if (!data.terminal) startPoll(id);
+};
+
+// --------------------------------------------------------------------- poll
+function startPoll(id){
+  stopPoll();
+  POLL = setInterval(async () => {
     const res = await fetch(`/runs/${id}`);
-    if (!res.ok) return stop();
-    const run = await res.json();
-    render(run);
-    if (run.terminal) stop();
-  }, 250);
+    if (!res.ok) return stopPoll();
+    const data = await res.json();
+    render(data);
+    if (data.terminal) stopPoll();
+  }, 300);
 }
-function stop(){ clearInterval(poll); poll = null; $('run').disabled = false; }
+function stopPoll(){ if (POLL) { clearInterval(POLL); POLL = null; } }
 
-/* --------------------------------------------------------------- render */
-function render(run){
-  CURRENT = run;
-  renderMeta(run);
-  renderSteps(run);
-  renderResult(run);
-  renderLedger(run);
+// ------------------------------------------------------------------- render
+function render(r){
+  $('statusPill').className = `pill ${r.status}`;
+  $('statusPill').textContent = r.status.replace(/_/g,' ');
+  $('runMeta').innerHTML = `<code>${r.id.slice(0,8)}</code> · ${r.goal}` +
+    (r.resume_count ? ` · resumed ${r.resume_count}×` : '');
+
+  // budget meters
+  const c = r.credits, b = r.bounds;
+  $('credUsed').textContent = c.used_display;
+  $('credCap').textContent  = b.max_credits_display;
+  $('stepUsed').textContent = b.steps_attempted;
+  $('stepCap').textContent  = b.max_steps;
+  const bounded = r.status === 'max_credits_exceeded' || r.status === 'max_steps_exceeded';
+  setFill('credFill', c.used_mc, b.max_credits_mc, r.status === 'max_credits_exceeded');
+  setFill('stepFill', b.steps_attempted, b.max_steps, r.status === 'max_steps_exceeded');
+
+  $('resumeBtn').classList.toggle('hidden', !r.resumable);
+  $('resumeBtn').dataset.id = r.id;
+
+  renderBanner(r, bounded);
+  renderSteps(r);
+  renderLedger(r);
+  renderReceipt(r);
 }
 
-function renderMeta(run){
-  $('meta').hidden = false;
-  $('pill').className = `pill ${run.status}`;
-  $('pill').textContent = run.status.replace(/_/g, ' ');
-  $('rid').innerHTML = `<code>${run.id.slice(0,8)}</code>` +
-    (run.resume_count ? ` · resumed ${run.resume_count}×` : '');
-  const c = run.credits, b = run.bounds;
-  $('cU').textContent = c.used_display; $('cC').textContent = b.max_credits_display;
-  $('sU').textContent = b.steps_attempted; $('sC').textContent = b.max_steps;
-  fill('cF', c.used_mc, b.max_credits_mc, run.status === 'max_credits_exceeded');
-  fill('sF', b.steps_attempted, b.max_steps, run.status === 'max_steps_exceeded');
-}
-function fill(id, used, cap, bound){
+function setFill(id, used, cap, isBound){
+  const pct = cap > 0 ? Math.min(100, Math.round(used / cap * 100)) : 0;
   const el = $(id);
-  el.style.width = (cap > 0 ? Math.min(100, Math.round(used / cap * 100)) : 0) + '%';
-  el.classList.toggle('bound', bound);
+  el.style.width = pct + '%';
+  el.classList.toggle('bound', isBound);
 }
 
-// A step is drawn only once the loop has reached it, and updates in place when
-// it finishes. Nothing is pre-drawn, so the list grows as the run progresses.
-function renderSteps(run){
-  for (const s of run.steps) {
-    if (s.status === 'pending' || s.status === 'skipped') continue;
-    let row = rows.get(s.name);
-    if (!row) {
-      row = document.createElement('div');
-      row.innerHTML =
-        `<div class="head">
-           <span class="idx more">${s.idx}</span>
-           <span class="dot"></span>
-           <span class="name">${s.name.replace(/_/g,' ')}</span>
-           <span class="tags"></span>
-           <span class="cost more">${s.quoted_cost_display}</span>
-           <span class="dur more"></span>
-           <span class="state"></span>
-         </div>
-         <div class="body"></div>`;
-      $('steps').appendChild(row);
-      rows.set(s.name, row);
-      row.querySelector('.head').onclick = () => {
-        if (!document.body.classList.contains('detail')) return;
-        if (!row.classList.contains('has-body')) return;
-        row.classList.toggle('open');
-        OPEN.has(s.name) ? OPEN.delete(s.name) : OPEN.add(s.name);
-      };
-    }
-    const hasBody = !!(s.output || s.error_message);
-    row.className = `step ${s.status}` + (hasBody ? ' has-body' : '') +
-      (OPEN.has(s.name) ? ' open' : '');
-    row.querySelector('.state').textContent =
-      s.status === 'running' ? '' : s.status === 'succeeded' ? 'done' : 'failed';
-    row.querySelector('.dur').textContent = s.duration_ms != null ? s.duration_ms + 'ms' : '';
-    row.querySelector('.cost').className = 'cost more' + (s.replayed ? ' zero' : '');
-    row.querySelector('.tags').innerHTML =
-      (s.replayed ? '<span class="tag replay more inline">replayed</span>' +
-                    '<span class="tag free more inline">0.000 cr</span>' : '') +
-      (s.attempt > 0 && !s.replayed ? `<span class="tag more inline">attempt ${s.attempt}</span>` : '');
-    row.querySelector('.body').innerHTML = !hasBody ? '' : (s.error_message
-      ? `<div class="errline">${esc(s.error_code)} — ${esc(s.error_message)}</div>`
-      : `<pre>${esc(JSON.stringify(s.output, null, 2))}</pre>`);
-  }
+function renderBanner(r, bounded){
+  const el = $('banner');
+  if (r.status === 'failed') {
+    el.innerHTML = `<div class="banner failed">
+      <div class="t">failed — ${r.error_code}</div>
+      <div class="m">${esc(r.error_message || '')}</div>
+      <div class="sub">Steps before <code>${r.failed_step || ''}</code> kept their charges and cached
+        their outputs. The failed step was charged <b>nothing</b>. Resume replays the cached work free.</div>
+    </div>`;
+  } else if (bounded) {
+    // A bound is NOT a failure -- different colour, different words, on purpose.
+    el.innerHTML = `<div class="banner bound">
+      <div class="t">${r.status.replace(/_/g,' ')} — terminal, not a failure</div>
+      <div class="m">${esc(r.error_message || '')}</div>
+      <div class="sub">The loop stopped itself at a limit it checked <em>before</em> running the next
+        step. Nothing was over-charged and nothing was half-executed. Resuming under the same
+        bound is refused — that would make the bound advisory.</div>
+    </div>`;
+  } else { el.innerHTML = ''; }
 }
 
-function renderResult(run){
-  const host = $('result');
-  if (!run.terminal) { host.innerHTML = ''; return; }
-
-  if (run.receipt) {
-    const r = run.receipt;
-    host.innerHTML = `<div class="card ok">
-      <div class="amount">${r.sent.display} → ${r.received.display}</div>
-      <div class="detailline">${esc(r.recipient.name)} · ${esc(r.recipient.network)} ·
-        ${esc(r.rate.provider)} @ ${esc(r.rate.display.replace('1 USD = ','').replace(' GHS',''))}</div>
-      <div class="credits"><b>${run.credits.used_display}</b> credits used</div>
-    </div>`;
-    return;
-  }
-  if (run.status === 'failed') {
-    host.innerHTML = `<div class="card bad">
-      <div class="title">Stopped at ${esc(run.failed_step || 'the first step')}</div>
-      <div class="msg">${esc(run.error_message || '')}</div>
-      <div class="note">${run.credits.used_mc > 0
-        ? `<b>${run.credits.used_display}</b> credits were charged for the steps that finished.
-           The step that failed was not charged.`
-        : 'No credits were charged.'}</div>
-      ${run.resumable ? '<button id="resume">Try again from here</button>' : ''}
-    </div>`;
-    const btn = $('resume');
-    if (btn) btn.onclick = async () => {
-      btn.disabled = true;
-      const res = await fetch(`/runs/${run.id}/resume`, {method:'POST'});
-      const next = await res.json();
-      if (!res.ok) return badge('err', `<b>${res.status}</b> ${esc(next.detail.code)} — ${esc(next.detail.message)}`);
-      badge('new', `<b>${res.status}</b> resuming — cached steps replay at <b>0.000</b> credits`);
-      $('result').innerHTML = '';
-      render(next);
-      if (!next.terminal) watch(run.id);
+function renderSteps(r){
+  const host = $('steps');
+  host.innerHTML = '';
+  // Draw only the steps the loop has actually reached. `pending` means not yet
+  // started, so it stays off screen and the list grows as the run progresses.
+  r.steps.filter(s => s.status !== 'pending').forEach(s => {
+    const hasBody = s.output || s.error_message;
+    const div = document.createElement('div');
+    div.className = `step ${s.status}` + (hasBody ? '' : ' no-output') +
+      (s.status === 'running' ? ' active' : '') + (OPEN.has(s.name) ? ' open' : '');
+    // A replayed step shows its rate-card price struck through: it ran, but
+    // this time it cost nothing.
+    const free = s.replayed;
+    div.innerHTML = `
+      <div class="step-head">
+        <span class="idx">${s.idx}</span>
+        <span class="dot ${s.status}"></span>
+        <span class="sname">${s.name}</span>
+        ${free ? '<span class="tag replay">replayed</span><span class="tag free">0.000 cr</span>' : ''}
+        ${s.attempt > 0 && !free ? `<span class="tag">attempt ${s.attempt}</span>` : ''}
+        <span class="cost ${free ? 'zero' : ''}">${s.quoted_cost_display}</span>
+        <span class="dur">${s.duration_ms != null ? s.duration_ms + 'ms' : ''}</span>
+      </div>
+      ${hasBody ? `<div class="step-body">${
+        s.error_message
+          ? `<div class="err">${esc(s.error_code)} — ${esc(s.error_message)}</div>`
+          : `<pre>${esc(JSON.stringify(s.output, null, 2))}</pre>`
+      }</div>` : ''}`;
+    if (hasBody) div.querySelector('.step-head').onclick = () => {
+      div.classList.toggle('open');
+      OPEN.has(s.name) ? OPEN.delete(s.name) : OPEN.add(s.name);
     };
-    return;
-  }
-  host.innerHTML = `<div class="card warn">
-    <div class="title">${run.status === 'max_steps_exceeded'
-      ? 'Stopped at the step limit' : 'Stopped at the credit limit'}</div>
-    <div class="msg">${esc(run.error_message || '')}</div>
-    <div class="note">The run held to its limit and stopped itself.
-      <b>${run.credits.used_display}</b> credits were used of ${run.bounds.max_credits_display} allowed.</div>
-  </div>`;
+    host.appendChild(div);
+  });
 }
 
-function renderLedger(run){
+function renderLedger(r){
   const host = $('ledger');
-  if (!run.ledger.length) {
-    host.innerHTML = `<h2>Ledger</h2><div style="font:12px var(--mono);color:var(--faint)">
-      no entries yet — nothing has been charged</div>`;
+  if (!r.ledger.length) {
+    host.innerHTML = `<div class="meta" style="color:var(--faint)">no entries yet — nothing has been charged</div>`;
     return;
   }
   let running = 0;
-  host.innerHTML = `<h2>Ledger <span>— append-only; the total is a SUM over these rows,
-    never a stored column</span></h2>
-    <table><thead><tr><th>#</th><th>Step</th><th>Idempotency key</th>
+  const rows = r.ledger.map(e => {
+    running += e.amount_mc;
+    return `<tr>
+      <td>${e.step_idx}</td>
+      <td>${e.step_name}${e.attempt ? ` <span class="key">attempt ${e.attempt}</span>` : ''}</td>
+      <td class="key">${e.entry_key}</td>
+      <td class="num">${e.amount_display}</td>
+      <td class="num" style="color:var(--dim)">${fmtMc(running)}</td>
+    </tr>`;
+  }).join('');
+  host.innerHTML = `<table>
+    <thead><tr><th>#</th><th>Step</th><th>Idempotency key</th>
       <th style="text-align:right">Charge</th><th style="text-align:right">Running</th></tr></thead>
-    <tbody>${run.ledger.map(e => {
-      running += e.amount_mc;
-      return `<tr><td>${e.step_idx}</td>
-        <td>${e.step_name}${e.attempt ? ` <span class="key">attempt ${e.attempt}</span>` : ''}</td>
-        <td class="key">${esc(e.entry_key)}</td>
-        <td class="num">${e.amount_display}</td>
-        <td class="num" style="color:var(--dim)">${fmtMc(running)}</td></tr>`;
-    }).join('')}</tbody>
+    <tbody>${rows}</tbody>
     <tfoot><tr><td colspan="3">SUM(ledger) — credits used</td>
-      <td class="num">${run.credits.used_display}</td>
-      <td class="num" style="color:var(--dim)">${run.credits.remaining_display} left</td></tr></tfoot>
-    </table>`;
+      <td class="num">${r.credits.used_display}</td>
+      <td class="num" style="color:var(--dim)">${r.credits.remaining_display} left</td></tr></tfoot>
+  </table>`;
 }
 
-function showError(detail){
-  $('result').innerHTML = `<div class="card bad">
-    <div class="title">Could not start the run</div>
-    <div class="msg">${esc(detail && detail.message ? detail.message : JSON.stringify(detail))}</div>
+function renderReceipt(r){
+  const host = $('receiptWrap');
+  if (!r.receipt) { host.innerHTML = ''; return; }
+  const x = r.receipt;
+  host.innerHTML = `<div class="receipt">
+    <div class="rt">receipt · ${x.transfer_id}</div>
+    <div class="rline"><span class="k">Recipient</span><span class="v">${esc(x.recipient.name)} · ${esc(x.recipient.msisdn)} · ${esc(x.recipient.network)}</span></div>
+    <div class="rline"><span class="k">Sent</span><span class="v">${x.sent.display}</span></div>
+    <div class="rline"><span class="k">Fee</span><span class="v">${x.fee.display}</span></div>
+    <div class="rline"><span class="k">Rate</span><span class="v">${x.rate.display} · ${esc(x.rate.provider)}</span></div>
+    <div class="rline big"><span class="k">Received</span><span class="v">${x.received.display}</span></div>
   </div>`;
 }
 
-// Credits formatted from integer milli-credits without touching a float,
+// ------------------------------------------------------------------ helpers
+// Credits formatted from integer milli-credits without ever touching a float,
 // mirroring format_mc() on the server.
 function fmtMc(mc){
-  const sign = mc < 0 ? '-' : ''; mc = Math.abs(mc);
+  const sign = mc < 0 ? '-' : '';
+  mc = Math.abs(mc);
   return `${sign}${Math.floor(mc/1000)}.${String(mc%1000).padStart(3,'0')}`;
 }
 function esc(s){
-  return String(s ?? '').replace(/[&<>"']/g, c =>
-    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  return String(s ?? '').replace(/[&<>"']/g, ch =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
 
-// Open an existing run directly: /?run=<id>. No visible control — it lets a run
+boot();
+
+// Open an existing run directly: /?run=<id>. No visible control -- it lets a run
 // created from the command line be shown on screen during a walkthrough.
-const link = new URLSearchParams(location.search).get('run');
-if (link) fetch(`/runs/${link}`).then(r => r.json()).then(run => {
-  if (!run.goal) return;
-  $('goal').value = run.goal;
-  render(run);
-  if (!run.terminal) watch(run.id);
-});
+const deepLink = new URLSearchParams(location.search).get('run');
+if (deepLink) {
+  fetch(`/runs/${deepLink}`).then(r => r.json()).then(run => {
+    if (!run.goal) return;
+    $('goal').value = run.goal;
+    $('runPanel').classList.remove('hidden');
+    render(run);
+    if (!run.terminal) startPoll(run.id);
+  });
+}
 </script>
 </body>
 </html>

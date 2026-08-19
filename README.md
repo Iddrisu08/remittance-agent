@@ -137,14 +137,17 @@ Bounds may be lowered per request but never raised past the ceiling in `config.p
 
 ## The screen
 
-Type a goal, watch the steps appear one at a time as the loop reaches them, see the result.
-On failure it shows the end state, the credits kept, and a **Try again from here** button.
+Type a goal and watch the steps appear one at a time as the loop reaches them, then the
+ledger and the receipt.
 
-A **Details** toggle reveals the full picture for inspection: HTTP status of each request,
-credit and step meters, per-step cost and duration, the raw step artifacts, and the ledger
-with its idempotency keys. Off by default.
+Everything a run does is on screen: the HTTP status of each request, the credit and step
+meters against their limits, per-step cost and duration, click any step to see its raw
+artifact, and the ledger with its idempotency keys. **Send duplicate request** replays the
+last request so the idempotent response is visible without curl.
 
-`/?run=<id>` opens an existing run — useful for showing a run created from the command line.
+Presets across the top set up each scenario — happy path, failure and resume, both limits,
+and the goals that fail on their own. `/?run=<id>` opens an existing run, which is useful
+for showing a run created from the command line.
 
 ---
 
