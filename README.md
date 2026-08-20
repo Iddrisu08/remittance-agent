@@ -4,7 +4,7 @@ A goal in plain language ("Send $500 to my mom in Accra at the best rate") is ex
 sequence of steps against mocked tools. The agent tracks progress, charges credits per step,
 and returns the run's status and output.
 
-**Stack:** Python · FastAPI · SQLModel + SQLite · vanilla HTML/JS. No LLM, no network calls.
+**Stack:** Python · FastAPI · SQLModel + SQLite · vanilla HTML/JS.
 
 ```bash
 ./run.sh      # → http://127.0.0.1:8000
